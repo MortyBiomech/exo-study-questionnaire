@@ -192,18 +192,19 @@ function resetParticipant() {
 
 function calcProgress() {
   let filled = 0, total = 0;
-  // A1 required fields
-  const a1req = ['ageOk','foot','leg','injuries','falls','neuro','skin','meds','exoExp','activity','okWalk','okDevice','consent'];
-  a1req.forEach(k => { total++; if (state.a1[k]) filled++; });
-  // A2
-  Object.values(state.a2).forEach(v => { total++; if (v !== null) filled++; });
-  // A3
-  state.a3.forEach(v => { total++; if (v !== null) filled++; });
-  // B (current)
-  const b = state.bList[state.bIdx];
-  ['b1','b2','b3','b4','b5'].forEach(s => b[s].forEach(v => { total++; if (v !== null) filled++; }));
-  // C2
-  state.c2.forEach(v => { total++; if (v !== null) filled++; });
+  if (state.tab === 'A') {
+    const a1req = ['ageOk','foot','leg','injuries','falls','neuro','skin','meds','exoExp','activity','okWalk','okDevice','consent'];
+    a1req.forEach(k => { total++; if (state.a1[k]) filled++; });
+    Object.values(state.a2).forEach(v => { total++; if (v !== null) filled++; });
+    state.a3.forEach(v => { total++; if (v !== null) filled++; });
+  } else if (state.tab === 'B') {
+    const b = state.bList[state.bIdx];
+    total++; if (b.condition) filled++;
+    ['b1','b2','b3','b4','b5'].forEach(s => b[s].forEach(v => { total++; if (v !== null) filled++; }));
+  } else {
+    state.c1.rank.forEach(v => { total++; if (v) filled++; });
+    state.c2.forEach(v => { total++; if (v !== null) filled++; });
+  }
   return Math.round((filled / total) * 100);
 }
 

@@ -447,6 +447,12 @@ function renderC() {
 function render() {
   const scrollArea = document.querySelector('.scroll-area');
   const savedScroll = scrollArea ? scrollArea.scrollTop : 0;
+  const active = document.activeElement;
+  let focusData = null;
+  if (active && active.tagName === 'INPUT' && active.type === 'text') {
+    const inputs = Array.from(document.querySelectorAll('input[type=text]'));
+    focusData = { idx: inputs.indexOf(active), selStart: active.selectionStart, selEnd: active.selectionEnd };
+  }
   const { tab, meta, notice, showResetModal } = state;
   const prog = calcProgress();
 
@@ -513,6 +519,11 @@ function render() {
 
   const newScrollArea = document.querySelector('.scroll-area');
   if (newScrollArea) newScrollArea.scrollTop = savedScroll;
+  if (focusData && focusData.idx >= 0) {
+    const inputs = Array.from(document.querySelectorAll('input[type=text]'));
+    const el = inputs[focusData.idx];
+    if (el) { el.focus(); try { el.setSelectionRange(focusData.selStart, focusData.selEnd); } catch(_) {} }
+  }
 }
 
 loadSaved();

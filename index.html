@@ -139,7 +139,7 @@
 <div id="root"></div>
 
 <script>
-const CONDITIONS = ['No-exo','exo-off','exo-1','exo-2','exo-3','exo-4','exo-5'];
+const CONDITIONS = ['No-exo-pre','No-exo-post','exo-1','exo-2','exo-3','exo-4','exo-5','exo-6'];
 const STORAGE_KEY = 'exo_questionnaire_v1';
 
 const state = {
@@ -344,7 +344,7 @@ function renderB() {
   bList.forEach((br,i) => {
     h += `<button class="pill-btn${i===bIdx?' sel':''}" onclick="state.bIdx=${i};render()">${br.condition||`Condition ${i+1}`}</button>`;
   });
-  if (bList.length < 7) {
+  if (bList.length < 8) {
     h += `<button class="pill-btn add" onclick="const ni=state.bList.length;state.bList.push({condition:'',b1:Array(12).fill(null),b2:Array(6).fill(null),b3:Array(6).fill(null),b4:Array(5).fill(null),b5:Array(6).fill(null)});state.bIdx=ni;render()">+ Add</button>`;
   }
   h += `</div>`;

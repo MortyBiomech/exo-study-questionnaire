@@ -140,6 +140,7 @@
 
 <script>
 const CONDITIONS = ['No-exo-pre','No-exo-post','exo-1','exo-2','exo-3','exo-4','exo-5','exo-6'];
+const RANK_CONDITIONS = ['exo-1','exo-2','exo-3','exo-4','exo-5','exo-6'];
 const STORAGE_KEY = 'exo_questionnaire_v1';
 
 const state = {
@@ -150,7 +151,7 @@ const state = {
   a3: Array(6).fill(null),
   bList: [mkB()],
   bIdx: 0,
-  c1: { rank: Array(5).fill(''), best:'', worst:'' },
+  c1: { rank: Array(6).fill(''), best:'', worst:'' },
   c2: Array(5).fill(null),
   notice: ''
 };
@@ -182,7 +183,7 @@ function resetParticipant() {
   state.a3 = Array(6).fill(null);
   state.bList = [mkB()];
   state.bIdx = 0;
-  state.c1 = { rank: Array(5).fill(''), best:'', worst:'' };
+  state.c1 = { rank: Array(6).fill(''), best:'', worst:'' };
   state.c2 = Array(5).fill(null);
   state.tab = 'A';
   state.showResetModal = false;
@@ -216,7 +217,7 @@ function exportCSV() {
     ...state.a3.reduce((o,v,i) => ({...o,[`a3_q${i+1}`]: v ?? ''}), {}),
     b_condition: br.condition,
     ...['b1','b2','b3','b4','b5'].reduce((o,s) => ({...o, ...br[s].reduce((o2,v,i) => ({...o2,[`${s}_q${i+1}`]: v ?? ''}), {})}), {}),
-    c1_1st: state.c1.rank[0], c1_2nd: state.c1.rank[1], c1_3rd: state.c1.rank[2], c1_4th: state.c1.rank[3], c1_5th: state.c1.rank[4],
+    c1_1st: state.c1.rank[0], c1_2nd: state.c1.rank[1], c1_3rd: state.c1.rank[2], c1_4th: state.c1.rank[3], c1_5th: state.c1.rank[4], c1_6th: state.c1.rank[5],
     c1_best_reason: state.c1.best, c1_worst_reason: state.c1.worst,
     ...state.c2.reduce((o,v,i) => ({...o,[`c2_q${i+1}`]: v ?? ''}), {})
   }));
@@ -413,14 +414,14 @@ function renderB() {
 
 function renderC() {
   let h = `<p class="sec-h">C1. Preference &amp; Ranking</p>`;
-  h += `<div class="q-block"><p class="q-label">Rank the 5 conditions from best (1st) to worst (5th) for overall experience:</p>
+  h += `<div class="q-block"><p class="q-label">Rank the 6 exo conditions from best (1st) to worst (6th) for overall experience:</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">`;
-  ['1st','2nd','3rd','4th','5th'].forEach((pos,i) => {
+  ['1st','2nd','3rd','4th','5th','6th'].forEach((pos,i) => {
     h += `<div style="display:flex;gap:5px;align-items:center">
       <span style="font-size:12px;color:var(--text-secondary);min-width:26px">${pos}</span>
       <select onchange="const r=[...state.c1.rank];r[${i}]=this.value;state.c1.rank=r;render()">
         <option value="">—</option>
-        ${CONDITIONS.map(c => `<option value="${c}" ${state.c1.rank[i]===c?'selected':''}>${c}</option>`).join('')}
+        ${RANK_CONDITIONS.map(c => `<option value="${c}" ${state.c1.rank[i]===c?'selected':''}>${c}</option>`).join('')}
       </select>
     </div>`;
   });
